@@ -27,8 +27,8 @@
             }
         }
 
-        // Grouping by platform
-        static Dictionary<string, List<VideoGame>> GroupByPlatform(List<VideoGame> games)
+        // Grouping by platform (LINQ i suck at this)
+        static Dictionary<string, List<VideoGame>> groupByPlatform(List<VideoGame> games)
         {
             Dictionary<string, List<VideoGame>> platformDictionary = games
                 .GroupBy(game => game.Platform)
@@ -40,17 +40,6 @@
         // LAMBA FUNTION that returns the top 5 video games
         static Func<List<VideoGame>, List<VideoGame>> topFiveGames = games =>
             games.OrderByDescending(game => game.Global_Sales).Take(5).ToList();
-
-        // Calculating stuff method 
-        static void calculatingPercent(List<VideoGame> games, string selectedValue)
-        {
-            int totalGames = games.Count;
-            int selectedValueGames = games.Count(game => game.Genre == selectedValue || game.Publisher == selectedValue);
-
-            double valuePercentage = (double)selectedValueGames / totalGames * 100;
-
-            Console.WriteLine($"\nOut of {totalGames} games in our CSV file, {selectedValueGames} are related to '{selectedValue}', which is {valuePercentage:F2}%");
-        }
 
         static void Main(string[] args)
         {
@@ -80,10 +69,8 @@
                 }
             }
 
-
-
             // Group by platform and display top 5 games for each platform
-            Dictionary<string, List<VideoGame>> platformDictionary = GroupByPlatform(videoGames);
+            Dictionary<string, List<VideoGame>> platformDictionary = groupByPlatform(videoGames);
 
             foreach (var platform in platformDictionary.Keys)
             {
